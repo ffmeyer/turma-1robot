@@ -44,3 +44,36 @@ inclui no /etc/hosts (permissao de admin) o alias para o pc encontrar o jenkins 
 sudo docker exec -it jenkins sh (acessar o console do conteiner jenkins)
 (ja dentro do conteiner, com usuario root)
 cat /var/jenkins_home/secrets/initialAdminPassword
+
+
+incluindo projeto dentro do docker
+
+gerar chave pub ssh 
+ssh-keygen 
+alguns <enter> depois
+cat $HOME/.ssh/id_rsa.pub  (chave gerada nessa caminho)
+cola no seu usuario no link https://github.com/settings/keys (new ssh-key)
+
+voltando ao terminal.
+git init 
+adicionando todo conteudo da pasta do projeto ao versionamento do git 
+git add . 
+git commit -m "mensagem de commit"
+
+git config --global user.email "ffmeyer@gmail.com"
+git config --global user.name "ffmeyer"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
