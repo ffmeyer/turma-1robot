@@ -63,6 +63,7 @@ git commit -m "mensagem de commit"
 git config --global user.email "ffmeyer@gmail.com"
 git config --global user.name "ffmeyer"
 
+commitar no jenins \0/
 
 
 
