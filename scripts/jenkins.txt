@@ -1,0 +1,46 @@
+  
+https://jenkins.io/doc/book/installing/#installing-docker
+
+Usando o comando abaixo, o sistema retorou o erro "docker: Error response from daemon: network jenkins not found."
+
+
+sudo docker container run --name jenkins-blueocean --detach --network jenkins --env DOCKER_HOST=tcp://docker:2376 --env DOCKER_CERT_PATH=/certs/client --env DOCKER_TLS_VERIFY=1 --volume jenkins-data:/var/jenkins_home --volume jenkins-docker-certs:/certs/client:ro --publish 8080:8080 --publish 50000:50000 jenkinsci/blueocean 
+
+
+ffmeyer@monstro-pc:~/qaninja/ninjaplus$ sudo docker container run --name jenkins-blueocean --detach --network jenkins --env DOCKER_HOST=tcp://docker:2376 --env DOCKER_CERT_PATH=/certs/client --env DOCKER_TLS_VERIFY=1 --volume jenkins-data:/var/jenkins_home --volume jenkins-docker-certs:/certs/client:ro --publish 8080:8080 --publish 50000:50000 jenkinsci/blueocean 
+926ffee90d03638c1c61b63cb06c4fe0dff88941c005e36e0225ad7c89f98c65
+docker: Error response from daemon: network jenkins not found.
+
+para resolver eu fiz o comando 
+"docker network create jenkins"
+depois executei novamente o docker run acima.
+o erro sumiu
+
+
+ffmeyer@monstro-pc:~/qaninja/ninjaplus$ sudo docker ps
+CONTAINER ID        IMAGE                   COMMAND                  CREATED             STATUS              PORTS                                              NAMES
+0dd6639b4008        jenkinsci/blueocean     "/sbin/tini -- /usr/…"   3 minutes ago       Up 3 minutes        0.0.0.0:8080->8080/tcp, 0.0.0.0:50000->50000/tcp   jenkins-blueocean
+afa99f207489        qaninja/ninjaplus-web   "docker-entrypoint.s…"   6 weeks ago         Up 57 minutes       0.0.0.0:5000->5000/tcp, 8000/tcp                   ninjaplus-web
+3772ab568559        qaninja/ninjaplus-api   "docker-entrypoint.s…"   6 weeks ago         Up 57 minutes       0.0.0.0:3000->3000/tcp                             ninjaplus-api
+fa30cead7ee6        dpage/pgadmin4          "/entrypoint.sh"         6 weeks ago         Up 57 minutes       443/tcp, 0.0.0.0:15432->80/tcp                     pgadmin
+a35965e41ed0        postgres                "docker-entrypoint.s…"   6 weeks ago         Up 57 minutes       0.0.0.0:5432->5432/tcp                             pgdb
+
+renomeando a instancia de jenkinsci/blueocean para jenkins (o id em outra maquina deve mudar)
+sudo docker rename 0dd6639b4008 jenkins
+
+Instalacao do jenkins no docker 
+
+
+
+inclui no /etc/hosts (permissao de admin) o alias para o pc encontrar o jenkins sem precisar por localhost:8080
+(jenkins, as demais ja estavam configuradas do projeto ninjaplus)
+127.0.0.1       pgdb
+127.0.0.1       pgadmin
+127.0.0.1       ninjaplus-api
+127.0.0.1       ninjaplus-web
+127.0.0.1       jenkins
+
+#chave de instalacao (senha de password inicial)
+sudo docker exec -it jenkins sh (acessar o console do conteiner jenkins)
+(ja dentro do conteiner, com usuario root)
+cat /var/jenkins_home/secrets/initialAdminPassword
